@@ -1,119 +1,194 @@
--- Crear la base de datos
-CREATE DATABASE  Soem_Oficial;
+/*CREAR BASE DE DATOS Y SELECCIONARLA*/
+CREATE DATABASE Soem_Oficial;
 USE Soem_Oficial;
 
--- 1. Tabla: Roles
+/*CREAR TODAS LAS TABLAS*/
+/*TABLA ROLES*/
 CREATE TABLE Roles (
-    id_rol INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_rol VARCHAR(45) NOT NULL,
-    Descripcion_roll VARCHAR(45)
-);
+  id_rol INT NOT NULL AUTO_INCREMENT,
+  nombre_rol VARCHAR(45) NOT NULL,
+  Descrip_rol VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_rol)
+  );
 
--- 2. Tabla: TipoDocumento
-CREATE TABLE TipoDocumento (
-    idTipoDocumento INT PRIMARY KEY AUTO_INCREMENT,
-    Descripcion VARCHAR(45) NOT NULL
-);
-
--- 3. Tabla: Categoria
+/*TABLA CATEGORIA*/
 CREATE TABLE Categoria (
-    idCategoria INT PRIMARY KEY AUTO_INCREMENT,
-    descripcion VARCHAR(45) NOT NULL
-);
+  id_Categoria INT NOT NULL AUTO_INCREMENT,
+  descripcion VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_Categoria)
+  );
+  
+/*TABLA TIPO DE DOCUMENTO*/
+CREATE TABLE TipoDocumento (
+  id_TipoDocumento INT NOT NULL AUTO_INCREMENT,
+  Descrip_documento VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_TipoDocumento)
+  );
 
--- 4. Tabla: Unidad
-CREATE TABLE Unidad (
-    id_unidad INT PRIMARY KEY AUTO_INCREMENT,
-    Descripcion_unidad VARCHAR(45) NOT NULL
-);
-
--- 5. Tabla: Talla
+/*TABLA TALLA*/
 CREATE TABLE Talla (
-    Id_Talla INT PRIMARY KEY AUTO_INCREMENT,
-    Descripcion_talla VARCHAR(100) NOT NULL
-);
+Id_Talla INT NOT NULL AUTO_INCREMENT,
+  Descripcion_talla VARCHAR(100) NOT NULL,
+  PRIMARY KEY (Id_Talla)
+  );
 
--- 6. Tabla: Colores
-CREATE TABLE Colores (
-    id_nombrecolor INT PRIMARY KEY AUTO_INCREMENT,
-    codigoRGB VARCHAR(45)
-);
-
--- 7. Tabla: Metododepago
+/*TABLA UNIDAD*/
+CREATE TABLE Unidad (
+  Id_unidad INT NOT NULL AUTO_INCREMENT,
+  Descripcion_unidad VARCHAR(45) NOT NULL,
+  PRIMARY KEY (Id_unidad)
+  );
+  
+/*TABLA METODO DE PAGO*/
 CREATE TABLE Metododepago (
-    id_metodoPago INT PRIMARY KEY AUTO_INCREMENT,
-    Descripcion_metodoPago VARCHAR(100) NOT NULL
-);
+  id_metodoPago INT NOT NULL AUTO_INCREMENT,
+  Descripcion_metodoPago VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id_metodoPago)
+  );
 
--- 8. Tabla: Usuario
-CREATE TABLE Usuario (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(45) NOT NULL,
-    Apellido VARCHAR(45) NOT NULL,
-    NumeroDocumento VARCHAR(45) NOT NULL,
-    Telefono VARCHAR(45),
-    correo VARCHAR(45) NOT NULL,
-    Clave VARCHAR(45) NOT NULL,
-    direccion VARCHAR(45),
-    Roles_id_rol INT,
-    Producto_id_producto INT, -- Nota: En el diagrama aparece una relación aquí
-    TipoDocumento_idTipoDocumento INT,
-    CONSTRAINT fk_usuario_rol FOREIGN KEY (Roles_id_rol) REFERENCES Roles(id_rol),
-    CONSTRAINT fk_usuario_documento FOREIGN KEY (TipoDocumento_idTipoDocumento) REFERENCES TipoDocumento(idTipoDocumento)
-);
-
--- 9. Tabla: Producto
+/*TABLA COLORES*/
+CREATE TABLE Colores (
+  id_nombre_color INT NOT NULL AUTO_INCREMENT,
+  codigoRGB VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_nombre_color)
+  );
+  
+  /*TABLA PERMISOS*/
+CREATE TABLE Permisos (
+  id_Permisos INT NOT NULL AUTO_INCREMENT,
+  Descrip_permisos VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_Permisos)
+  );
+  
+/*TABLA PRODUCTO*/
 CREATE TABLE Producto (
-    id_producto INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(45) NOT NULL,
-    descripcion VARCHAR(100),
-    stock VARCHAR(45), -- Considerar cambiar a INT en el futuro
-    precio_producto DECIMAL(10,2) NOT NULL,
-    Categoria_idCategoria INT,
-    Talla_id_Talla INT,
-    Unidad_id_unidad INT,
-    CONSTRAINT fk_producto_categoria FOREIGN KEY (Categoria_idCategoria) REFERENCES Categoria(idCategoria),
-    CONSTRAINT fk_producto_talla FOREIGN KEY (Talla_id_Talla) REFERENCES Talla(Id_Talla),
-    CONSTRAINT fk_producto_unidad FOREIGN KEY (Unidad_id_unidad) REFERENCES Unidad(id_unidad)
-);
+  id_producto INT NOT NULL AUTO_INCREMENT,
+  Nombre_Producto VARCHAR(45) NOT NULL,
+  Descrip_Producto VARCHAR(100) NOT NULL,
+  stock VARCHAR(45) NOT NULL,
+  precio_producto DECIMAL(10,2) NOT NULL,
+  Categoria_idCategoria INT NOT NULL,
+  Talla_Id_Talla INT NOT NULL,
+  Unidad_Id_unidad INT NOT NULL,
+  PRIMARY KEY (id_producto),
+  CONSTRAINT fk_Producto_Categoria
+    FOREIGN KEY (Categoria_idCategoria)
+    REFERENCES Categoria (id_Categoria),
+  CONSTRAINT fk_Producto_Talla
+    FOREIGN KEY (Talla_Id_Talla)
+    REFERENCES Talla (Id_Talla),
+  CONSTRAINT fk_Producto_Unidad
+    FOREIGN KEY (Unidad_Id_unidad)
+    REFERENCES Unidad (Id_unidad)
+    );
+ 
+/*TABLA USUARIO*/
+CREATE TABLE Usuario (
+  id_Usuario INT NOT NULL AUTO_INCREMENT,
+  Nombre_Usuario VARCHAR(45) NOT NULL,
+  Apellido_Usuario VARCHAR(45) NOT NULL,
+  Numero_Documento VARCHAR(45) NOT NULL,
+  Telefono VARCHAR(45) NOT NULL,
+  correo VARCHAR(45) NOT NULL,
+  Contraseña VARCHAR(45) NOT NULL,
+  Direccion VARCHAR(45) NOT NULL,
+  Fecha_nacimiento DATE NOT NULL,
+  Fecha_vencimiento DATE NOT NULL,
+  Autorizacion_datos VARCHAR(45) NOT NULL,
+  Roles_id_rol INT NOT NULL,
+  Producto_id_producto INT NOT NULL,
+  TipoDocumento_idTipoDocumento INT NOT NULL,
+  PRIMARY KEY (id_Usuario),
+  CONSTRAINT fk_Usuario_Roles1
+    FOREIGN KEY (Roles_id_rol)
+    REFERENCES Roles (id_rol),
+  CONSTRAINT fk_Usuario_Producto
+    FOREIGN KEY (Producto_id_producto)
+    REFERENCES Producto (id_producto),
+  CONSTRAINT fk_Usuario_TipoDocumento
+    FOREIGN KEY (TipoDocumento_idTipoDocumento)
+    REFERENCES TipoDocumento (id_TipoDocumento)
+    );
 
--- 10. Tabla: Cabeza_Factura
+/*TABLA CABEZA FACTURA*/
 CREATE TABLE Cabeza_Factura (
-    id_factura INT PRIMARY KEY AUTO_INCREMENT,
-    numero_fac INT NOT NULL,
-    fecha_factura DATE NOT NULL,
-    total_factura DECIMAL(10,2),
-    Usuario_id_usuario INT,
-    CONSTRAINT fk_factura_usuario FOREIGN KEY (Usuario_id_usuario) REFERENCES Usuario(id_usuario)
-);
+  id_factura INT NOT NULL AUTO_INCREMENT,
+  numero_fac INT NOT NULL,
+  fecha_factura DATE NOT NULL,
+  tota_factura DECIMAL(10,2) NOT NULL,
+  Usuario_id_usuario INT NOT NULL,
+  PRIMARY KEY (id_factura),
+  CONSTRAINT fk_Cabeza_Factura_Usuario
+    FOREIGN KEY (Usuario_id_usuario)
+    REFERENCES Usuario (id_Usuario)
+    );
 
--- 11. Tabla: Detalle_Factura
-CREATE TABLE Detalle_Factura (
-    idDetalle_Factura INT PRIMARY KEY AUTO_INCREMENT,
-    cantidad INT NOT NULL,
-    subtotal_fac DECIMAL(10,2),
-    Cabeza_Factura_id_factura INT,
-    Producto_id_producto INT,
-    CONSTRAINT fk_detalle_factura FOREIGN KEY (Cabeza_Factura_id_factura) REFERENCES Cabeza_Factura(id_factura),
-    CONSTRAINT fk_detalle_producto FOREIGN KEY (Producto_id_producto) REFERENCES Producto(id_producto)
-);
-
--- 12. Tabla: Pagos
+/*TABLA PAGOS*/
 CREATE TABLE Pagos (
-    id_pago INT PRIMARY KEY AUTO_INCREMENT,
-    fecha_pago DATETIME NOT NULL,
-    montoPago DECIMAL(10,2) NOT NULL,
-    Metododepago_id_metodoPago INT,
-    Cabeza_Factura_id_factura INT,
-    CONSTRAINT fk_pagos_metodo FOREIGN KEY (Metododepago_id_metodoPago) REFERENCES Metododepago(id_metodoPago),
-    CONSTRAINT fk_pagos_factura FOREIGN KEY (Cabeza_Factura_id_factura) REFERENCES Cabeza_Factura(id_factura)
-);
+  id_pago INT NOT NULL AUTO_INCREMENT,
+  fecha_pago DATETIME NOT NULL,
+  montoPago DECIMAL(10,2) NOT NULL,
+  Metododepago_id_metodoPago INT NOT NULL,
+  Cabeza_Factura_id_factura INT NOT NULL,
+  PRIMARY KEY (id_pago),
+  CONSTRAINT fk_Pagos_Metododepago
+    FOREIGN KEY (Metododepago_id_metodoPago)
+    REFERENCES Metododepago (id_metodoPago),
+  CONSTRAINT fk_Pagos_Cabeza_Factura
+    FOREIGN KEY (Cabeza_Factura_id_factura)
+    REFERENCES Cabeza_Factura (id_factura)
+   );
 
--- 13. Tabla Intermedia: Producto_has_Colores (Muchos a Muchos)
+/*TABLA PRODUCTO HAS COLORES*/
 CREATE TABLE Producto_has_Colores (
-    Producto_id_producto INT,
-    Colores_id_nombrecolor INT,
-    PRIMARY KEY (Producto_id_producto, Colores_id_nombrecolor),
-    CONSTRAINT fk_prod_col_producto FOREIGN KEY (Producto_id_producto) REFERENCES Producto(id_producto),
-    CONSTRAINT fk_prod_col_color FOREIGN KEY (Colores_id_nombrecolor) REFERENCES Colores(id_nombrecolor)
+  Producto_id_producto INT NOT NULL,
+  Colores_id_nombre_color INT NOT NULL,
+  PRIMARY KEY (Producto_id_producto, Colores_id_nombre_color),
+  CONSTRAINT fk_Producto_has_Colores_Producto
+    FOREIGN KEY (Producto_id_producto)
+    REFERENCES Producto (id_producto),
+  CONSTRAINT fk_Producto_has_Colores_Colores
+    FOREIGN KEY (Colores_id_nombre_color)
+    REFERENCES Colores (id_nombre_color)
+    );
+
+/*TABLA DETALLE FACTURA*/
+CREATE TABLE Detalle_Factura (
+  id_Detalle_Factura INT NOT NULL AUTO_INCREMENT,
+  cantidad INT NOT NULL,
+  subtotal_fac DECIMAL(10,2) NOT NULL,
+  Cabeza_Factura_id_factura INT NOT NULL,
+  Producto_id_producto INT NOT NULL,
+  PRIMARY KEY (id_Detalle_Factura),
+  CONSTRAINT fk_Detalle_Factura_Cabeza_Factura
+    FOREIGN KEY (Cabeza_Factura_id_factura)
+    REFERENCES Cabeza_Factura (id_factura),
+  CONSTRAINT fk_Detalle_Factura_Producto
+    FOREIGN KEY (Producto_id_producto)
+    REFERENCES Producto (id_producto)
+  );
+
+/*TABLA ROLES HAS PERMISOS*/
+CREATE TABLE Roles_has_Permisos (
+  Roles_id_rol INT NOT NULL,
+  Permisos_id_Permisos INT NOT NULL,
+  PRIMARY KEY (Roles_id_rol, Permisos_id_Permisos),
+  CONSTRAINT fk_Roles_has_Permisos_Roles
+    FOREIGN KEY (Roles_id_rol)
+    REFERENCES Roles (id_rol),
+  CONSTRAINT fk_Roles_has_Permisos_Permisos
+    FOREIGN KEY (Permisos_id_Permisos)
+    REFERENCES Permisos (id_Permisos)
+   );
+
+/*TABLA CARRITO COMPRA*/
+CREATE TABLE Carrito_Compra (
+  id_Carrito INT NOT NULL AUTO_INCREMENT,
+  Cantidad VARCHAR(45) NOT NULL,
+  Fecha_agregado DATE NOT NULL,
+  Producto_id_producto INT NOT NULL,
+  PRIMARY KEY (id_Carrito),
+  CONSTRAINT fk_Carrito_Compra_Producto
+    FOREIGN KEY (Producto_id_producto)
+    REFERENCES Producto (id_producto)
 );
